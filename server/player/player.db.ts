@@ -7,8 +7,8 @@ const exp = global.exports
 export class _playerDb {
     createPlayer(player: Player) {
         exp.oxmysql.insert(
-            "INSERT INTO users (identifier, name, phone_number) VALUES (?, ?, ?)",
-            [player.identifier, player.name, player.phone_number]
+            "INSERT INTO users (identifier, name, phone_number, position) VALUES (?, ?, ?, ?)",
+            [player.identifier, player.name, player.phone_number, player.position]
         )
     }
 
@@ -18,12 +18,19 @@ export class _playerDb {
             [identifier]
         )
 
-        const result = <{name: string, identifier: string, phone_number: string}[]>results
+        const result = <PlayerDbResult[]>results
         if (!result || result.length < 1) {
             return [false, undefined]
         } else {
             return [true, result[0]]
         }
+    }
+
+    async update(player: Player) {
+        await exp.oxmysql.update_async(
+            "UPDATE users SET position = ? WHERE identifier = ? ",
+            [JSON.stringify(player.position), player.identifier]
+        )
     }
 }
 

@@ -3,10 +3,12 @@ export interface PlayerProps {
     identifier: string;
     source: number;
     phone_number: string;
+    position: Vector;
 }
 
 export interface PlayerDbResult {
-    name: string
-    identifier: string,
-    phone_number: string
+    name: string;
+    identifier: string;
+    phone_number: string;
+    position: string;
 }

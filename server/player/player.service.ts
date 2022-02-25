@@ -17,8 +17,16 @@ export class _playerService {
         this.playersBySource.set(source, player)
     }
 
+    getPlayer(source: number): Player | undefined {
+        return this.playersBySource.get(source)
+    }
+
     removePlayer(source: number): void {
         this.playersBySource.delete(source)
+    }
+
+    async updatePlayer(player: Player) {
+        await this.db.update(player)
     }
 
     async playerJoined(source: number): Promise<Player | undefined> {
@@ -35,16 +43,18 @@ export class _playerService {
                 name: GetPlayerName(source.toString()),
                 source,
                 identifier,
-                phone_number: number
+                phone_number: number,
+                position: {x: 0.0, y: 0.0, z: 0.0}
             })
             this.db.createPlayer(player)
         } else {
-            const {name, phone_number} = result!
+            const {name, phone_number, position} = result!
             player = new Player({
                 name,
                 identifier,
                 source,
-                phone_number
+                phone_number,
+                position: JSON.parse(position)
             })
         }
 

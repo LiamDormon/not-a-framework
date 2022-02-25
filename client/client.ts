@@ -1,17 +1,21 @@
 import './modules'
+import {Vec3} from "@nativewrappers/client/lib/utils/Vector3";
+import {Fading, Game, Vector3} from "@nativewrappers/client";
 
-const interval = setInterval(() => {
+const exp = global.exports
+
+const interval = setTick(async () => {
   if (NetworkIsSessionActive()) {
-    global.exports.spawnmanager.spawnPlayer({
-      x: 466.8401,
-      y: 197.7201,
-      z: 111.5291,
-      heading: 291.71,
-      model: 'a_m_m_farmer_01',
-      skipFade: false
-    }, function() {
-      emitNet("test-env:playerLoaded")
-      clearInterval(interval)
-    })
+    clearTick(interval)
+    await Fading.fadeOut(500)
+    exp.spawnmanager.setAutoSpawn(false)
+    emitNet("test-env:playerLoaded")
   }
-}, 1000)
+},)
+
+onNet("test-env:spawnPlayer",(position: Vec3) => {
+  setTimeout(async () => {
+    Game.PlayerPed.Position = Vector3.create(position)
+    await Fading.fadeIn(500)
+  }, 1000)
+})
