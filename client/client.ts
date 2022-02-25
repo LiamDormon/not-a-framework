@@ -1,3 +1,5 @@
+import './modules'
+
 const interval = setInterval(() => {
   if (NetworkIsSessionActive()) {
     global.exports.spawnmanager.spawnPlayer({
