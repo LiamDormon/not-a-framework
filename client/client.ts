@@ -8,7 +8,6 @@ const interval = setTick(async () => {
   if (NetworkIsSessionActive()) {
     clearTick(interval)
     await Fading.fadeOut(500)
-    exp.spawnmanager.setAutoSpawn(false)
     emitNet("test-env:playerLoaded")
   }
 },)

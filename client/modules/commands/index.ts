@@ -1,6 +1,7 @@
 import VehicleCommand from './createvehicle'
 import WeaponCommand from './giveweapon'
 import DeleteVehicle from './deletevehicle'
+import TeleportMarker from './teleportmarket'
 
 interface CommandArgs {
     name: string;
@@ -39,3 +40,4 @@ export const CreateCommand = (command: Command) => {
 CreateCommand(WeaponCommand)
 CreateCommand(VehicleCommand)
 CreateCommand(DeleteVehicle)
+CreateCommand(TeleportMarker)
