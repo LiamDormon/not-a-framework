@@ -1,7 +1,7 @@
 import './player'
 
 on("onResourceStart", (name: string) => {
-    if (name == "test-env") {
+    if (name == GetCurrentResourceName()) {
         setTimeout(() => {
             console.log(`^1       
   _____           _           _     ______                     
