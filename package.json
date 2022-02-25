@@ -1,0 +1,25 @@
+{
+  "name": "fivem-ts-boilerplate",
+  "version": "1.0.0",
+  "description": "A boilerplate for TypeScript in FiveM",
+  "main": "index.js",
+  "scripts": {
+    "build": "node prod.build.js",
+    "watch": "node dev.build.js"
+  },
+  "author": "Project Error",
+  "license": "MIT",
+  "dependencies": {
+    "@nativewrappers/client": "^1.7.1",
+    "ascii-art": "^2.8.5"
+  },
+  "devDependencies": {
+    "@citizenfx/client": "^2.0.5012-1",
+    "@citizenfx/server": "^2.0.5012-1",
+    "@types/node": "^16.11.10",
+    "esbuild": "^0.14.18",
+    "esbuild-node-externals": "^1.4.1",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.2"
+  }
+}
