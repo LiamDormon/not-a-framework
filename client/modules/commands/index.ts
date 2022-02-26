@@ -2,6 +2,7 @@ import VehicleCommand from './createvehicle'
 import WeaponCommand from './giveweapon'
 import DeleteVehicle from './deletevehicle'
 import TeleportMarker from './teleportmarket'
+import FixVehicle from './fixvehicle'
 
 interface CommandArgs {
     name: string;
@@ -41,3 +42,4 @@ CreateCommand(WeaponCommand)
 CreateCommand(VehicleCommand)
 CreateCommand(DeleteVehicle)
 CreateCommand(TeleportMarker)
+CreateCommand(FixVehicle)
