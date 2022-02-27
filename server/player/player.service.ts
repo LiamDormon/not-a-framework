@@ -1,6 +1,6 @@
 import {Player} from "./player.class";
 import {PlayerDb, _playerDb} from "./player.db"
-import {getPlayerLicense} from "../utils";
+import {getPlayerIdentifier} from "../utils";
 
 const exp = global.exports
 
@@ -30,11 +30,10 @@ export class _playerService {
     }
 
     async playerJoined(source: number): Promise<Player | undefined> {
-        const identifier = getPlayerLicense(source)
+        const identifier = getPlayerIdentifier(source, "fivem")
         if (!identifier) return;
 
         let player: Player
-
 
         const [exists, result] = await this.db.getPlayer(identifier)
         if (!exists) {
