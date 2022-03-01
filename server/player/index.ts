@@ -1,5 +1,6 @@
 import PlayerService from './player.service'
 import Logger from '../logger'
+import {getPlayerIdentifier} from "../utils";
 
 const exp = global.exports
 
@@ -36,4 +37,26 @@ on("playerDropped", async () => {
     PlayerService.updatePlayer(Player).then(() => {
         PlayerService.removePlayer(src)
     })
+})
+
+interface IDeferral {
+    defer: () => void;
+    update: (message: string) => void;
+    presentCard: (card: unknown, cb: (data: unknown, rawData: string) => void) => void;
+    done: (reason?: string) => void;
+}
+
+on("playerConnecting", (name: string, setKickReason: (msg: string) => void, deferrals: IDeferral) => {
+    const src = global.source;
+    deferrals.defer()
+    deferrals.update(`Hello ${name}, checking identifiers`)
+
+    setTimeout(async () => {
+        const identifier = await getPlayerIdentifier(src, 'fivem')
+        if (!identifier) {
+            return deferrals.done("Could not find cfx.re identifier")
+        }
+
+        deferrals.done()
+    }, 500)
 })
