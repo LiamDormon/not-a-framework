@@ -30,7 +30,7 @@ export class _playerService {
     }
 
     async playerJoined(source: number): Promise<Player | undefined> {
-        const identifier = getPlayerIdentifier(source, "fivem")
+        const identifier = await getPlayerIdentifier(source, "fivem")
         if (!identifier) return;
 
         let player: Player
