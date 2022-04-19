@@ -1,21 +1,42 @@
 import './modules'
 import {Vec3} from "@nativewrappers/client/lib/utils/Vector3";
-import {Fading, Game, Vector3} from "@nativewrappers/client";
+import HOSPITAL_SPAWNS from './hospitals.json'
+import {Game} from "@nativewrappers/client";
 
-const interval = setTick(async () => {
-  if (NetworkIsSessionActive()) {
-    clearTick(interval)
-    await Fading.fadeOut(500)
-    emitNet("test-env:playerLoaded")
-  }
-},)
+const exp = global.exports
+const DEFAULT_SPAWN = {x: 466.8401, y: 197.7201, z: 111.5291}
 
-onNet("test-env:spawnPlayer",(position: Vec3) => {
-  setTimeout(async () => {
-    Game.PlayerPed.Position = Vector3.create(position)
-    await Fading.fadeIn(500)
-    SetMaxWantedLevel(0)
-  }, 1000)
+const NearestHospital = () => {
+  const PlyPos = Game.PlayerPed.Position
+  let ClosestHospital: Vec3 = {x: 0.0, y: 0.0, z: 0.0}
+  let ClosestDist = -1
+  HOSPITAL_SPAWNS.forEach(location => {
+    const dist = PlyPos.distance(location)
+    console.log(location, dist)
+
+    if (ClosestDist === -1 || dist < ClosestDist) {
+      ClosestDist = dist
+      ClosestHospital = location
+    }
+  })
+
+  return ClosestHospital
+}
+
+exp["spawnmanager"].setAutoSpawnCallback(() => {
+    if (LocalPlayer.state['firstSpawn']) {
+        const coords: Vec3 = LocalPlayer.state['spawnCoords'] ?? DEFAULT_SPAWN;
+        exp['spawnmanager'].spawnPlayer({
+            ...coords,
+            skipFade: false
+        })
+        LocalPlayer.state.set("firstSpawn", false, true)
+    } else {
+        const coords = NearestHospital();
+        exp['spawnmanager'].spawnPlayer({
+            ...coords,
+            heading: 260.0,
+            skipFade: false
+        })
+    }
 })
-
-

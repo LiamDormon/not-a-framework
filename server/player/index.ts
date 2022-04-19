@@ -4,7 +4,7 @@ import {getPlayerIdentifier} from "../utils";
 
 const exp = global.exports
 
-onNet("test-env:playerLoaded", async () => {
+onNet("playerJoining", async () => {
     const src = global.source
     PlayerService.playerJoined(src).then(player => {
       if (player) {
@@ -15,7 +15,10 @@ onNet("test-env:playerLoaded", async () => {
               identifier: player.identifier,
               phoneNumber: player.phone_number
           })
-          emitNet("test-env:spawnPlayer", src, player.position)
+
+          const PlayerState = Player(src).state
+          PlayerState.set("firstSpawn", true, true)
+          PlayerState.set("spawnCoords", player.position, true)
       }
     })
 })
