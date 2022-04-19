@@ -5,6 +5,7 @@ import TeleportMarker from './teleportmarket'
 import FixVehicle from './fixvehicle'
 import './showcoords'
 import ShowCoords from './showcoords'
+import SetModel from './setmodel'
 
 interface CommandArgs {
     name: string;
@@ -46,3 +47,4 @@ CreateCommand(DeleteVehicle)
 CreateCommand(TeleportMarker)
 CreateCommand(FixVehicle)
 CreateCommand(ShowCoords)
+CreateCommand(SetModel)

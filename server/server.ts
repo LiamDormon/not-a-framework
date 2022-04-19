@@ -1,4 +1,4 @@
-import './player'
+import './player/player.controller'
 
 on("onResourceStart", (name: string) => {
     if (name == GetCurrentResourceName()) {

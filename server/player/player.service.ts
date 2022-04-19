@@ -1,6 +1,7 @@
 import {Player} from "./player.class";
 import {PlayerDb, _playerDb} from "./player.db"
 import {getPlayerIdentifier} from "../utils";
+import Logger from '../logger'
 
 const exp = global.exports
 
@@ -43,22 +44,50 @@ export class _playerService {
                 source,
                 identifier,
                 phone_number: number,
-                position: {x: 0.0, y: 0.0, z: 0.0}
+                position: {x: 0.0, y: 0.0, z: 0.0},
+                model: GetHashKey("a_m_y_hipster_02")
             })
             this.db.createPlayer(player)
         } else {
-            const {name, phone_number, position} = result!
+            const {name, phone_number, x, y, z, model} = result!
             player = new Player({
                 name,
                 identifier,
                 source,
                 phone_number,
-                position: JSON.parse(position)
+                position: {x, y, z},
+                model
             })
         }
 
+        Logger.info(`Loaded new player ${player.source}:${player.name}`)
+        Logger.debug(player)
+
         await this.addPlayer(source, player)
         return player
+    }
+
+    async updatePlayerPosition(source: number) {
+        const player = this.getPlayer(source)
+        if (!player) return;
+
+        const [x, y, z] = GetEntityCoords(GetPlayerPed(source.toString()))
+
+        player.position = {x, y, z}
+        await this.updatePlayer(player)
+
+        Logger.info(`Updated position for player [${source}] coords: [${x}, ${y}. ${z}]`)
+    }
+
+    async updatePlayerModel(source: number, model: number) {
+        const player = this.getPlayer(source)
+        Logger.debug(player)
+
+        if (!player) return
+        player.model = model;
+        await this.db.update(player)
+
+        Logger.info(`Updated player model for Player [${source}] to ${model}`)
     }
 }
 

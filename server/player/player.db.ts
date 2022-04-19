@@ -26,9 +26,16 @@ export class _playerDb {
     }
 
     async update(player: Player) {
+        console.log(player)
         await exp.oxmysql.update_async(
-            "UPDATE users SET position = ? WHERE identifier = ? ",
-            [JSON.stringify(player.position), player.identifier]
+            "UPDATE users SET x = :x, y = :y, z = :z, model = :model WHERE identifier = :iden ",
+            {
+                x: player.position.x,
+                y: player.position.y,
+                z: player.position.z,
+                model: player.model,
+                iden: player.identifier
+            }
         )
     }
 }

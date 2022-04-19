@@ -1,9 +1,16 @@
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `identifier` varchar(50) NOT NULL,
-  `name` varchar(50) DEFAULT NULL,
-  `phone_number` varchar(50) DEFAULT NULL,
-  `position` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  PRIMARY KEY (`identifier`),
-  KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `identifier` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_general_ci',
+    `name` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
+    `phone_number` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
+    `x` FLOAT NULL DEFAULT NULL,
+    `y` FLOAT NULL DEFAULT NULL,
+    `z` FLOAT NULL DEFAULT NULL,
+    `model` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
+    PRIMARY KEY (`identifier`) USING BTREE,
+    INDEX `id` (`id`) USING BTREE
+)
+    COLLATE='utf8mb4_general_ci'
+    ENGINE=InnoDB
+    AUTO_INCREMENT=1
+;

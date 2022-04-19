@@ -8,12 +8,11 @@ onNet("playerJoining", async () => {
     const src = global.source
     PlayerService.playerJoined(src).then(player => {
       if (player) {
-          Logger.info(`Loaded new player ${src}:${player.name}`)
-          Logger.debug(player)
           exp.npwd.newPlayer({
               source: player.source,
               identifier: player.identifier,
-              phoneNumber: player.phone_number
+              phoneNumber: player.phone_number,
+              firstname: player.name
           })
 
           const PlayerState = Player(src).state
@@ -23,23 +22,24 @@ onNet("playerJoining", async () => {
     })
 })
 
+on("onResourceStart", () => {
+    getPlayers()?.forEach(async src => {
+        await PlayerService.playerJoined(Number(src))
+    })
+})
+
+on("onResourceStop", () => {
+    getPlayers()?.forEach(async src => {
+        await PlayerService.updatePlayerPosition(Number(src))
+    })
+})
+
 on("playerDropped", async () => {
     const src = global.source
-    const Player = PlayerService.getPlayer(src)
-    if (!Player) {
-        PlayerService.removePlayer(src)
-        return
-    }
+    await PlayerService.updatePlayerPosition(src)
 
     Logger.info(`Player disconnected: ${src}: ${Player.name}`)
-
-    const [x, y, z] = GetEntityCoords(GetPlayerPed(src.toString()))
-    Logger.debug(`Player[${src}] coords: [${x}, ${y}. ${z}]`)
-
-    Player.position = {x, y, z}
-    PlayerService.updatePlayer(Player).then(() => {
-        PlayerService.removePlayer(src)
-    })
+    PlayerService.removePlayer(src)
 })
 
 interface IDeferral {
@@ -62,4 +62,9 @@ on("playerConnecting", (name: string, setKickReason: (msg: string) => void, defe
 
         deferrals.done()
     }, 500)
+})
+
+AddStateBagChangeHandler("playerModel", "", async (bagName: string, key: string, value: number) => {
+    const src = bagName.trim().replace("player:", "")
+    await PlayerService.updatePlayerModel(Number(src), value)
 })
