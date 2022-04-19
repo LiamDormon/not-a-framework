@@ -14,8 +14,8 @@
     "ascii-art": "^2.8.5"
   },
   "devDependencies": {
-    "@citizenfx/client": "^2.0.5012-1",
-    "@citizenfx/server": "^2.0.5012-1",
+    "@citizenfx/client": "^2.0.5503-1",
+    "@citizenfx/server": "^2.0.5503-1",
     "@types/node": "^16.11.10",
     "esbuild": "^0.14.18",
     "esbuild-node-externals": "^1.4.1",

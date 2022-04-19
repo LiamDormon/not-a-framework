@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@citizenfx/client@^2.0.5012-1":
-  version "2.0.5012-1"
-  resolved "https://registry.yarnpkg.com/@citizenfx/client/-/client-2.0.5012-1.tgz#3f5126e3a4ca7d01a2d0845f4850062b5bb3ad4d"
-  integrity sha512-DLb4Csz3NbCSIE23QZQaz3r53ZscFE1YEQMFNivRnccX+srdMptU+Bki61/YddBcg656A/Dbmh12+C6Iklgi7g==
+"@citizenfx/client@^2.0.5503-1":
+  version "2.0.5503-1"
+  resolved "https://registry.yarnpkg.com/@citizenfx/client/-/client-2.0.5503-1.tgz#082e8cc67c2d5be5203bd10ce268bd7bcb831eeb"
+  integrity sha512-4JjWPSi4haiycFd4zU7wXxtXDlVZePT2AaBVvKDHIbc1IfEnySJU6qi6WDp6LexyNqG24TVtEq3QiyXqbX5p0g==
 
-"@citizenfx/server@^2.0.5012-1":
-  version "2.0.5012-1"
-  resolved "https://registry.yarnpkg.com/@citizenfx/server/-/server-2.0.5012-1.tgz#2ff90bd4ec99958d93fedbd46e68ac6a30a1c0ae"
-  integrity sha512-Ni+U3drD+aAdZS5tJQV2Gf1N8t1kPZxTHIIiLVsizLyZQ99mnFkk42S/LDmp1PNSqfsMb5lvlIkoXdsT3hcfRg==
+"@citizenfx/server@^2.0.5503-1":
+  version "2.0.5503-1"
+  resolved "https://registry.yarnpkg.com/@citizenfx/server/-/server-2.0.5503-1.tgz#b8d7a5415f83eecd654837226b15ae5c8232f52c"
+  integrity sha512-uRXWE52Cfa73BC51q3WnrHkvIHACwas4R8GpKkrOhRtXIEBAHmvRXQ1cPSmTVllMKRWYRhrV5KwX6FE4pPyKrA==
 
 "@mapbox/node-pre-gyp@^1.0.0":
   version "1.0.8"
