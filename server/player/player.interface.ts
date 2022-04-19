@@ -4,7 +4,7 @@ export interface PlayerProps {
     source: number;
     phone_number: string;
     position: Vector;
-    model: number;
+    model: string;
 }
 
 export interface PlayerDbResult {
@@ -14,5 +14,5 @@ export interface PlayerDbResult {
     x: number;
     y: number;
     z: number;
-    model: number;
+    model: string;
 }

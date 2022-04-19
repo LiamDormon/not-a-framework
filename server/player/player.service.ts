@@ -1,4 +1,4 @@
-import {Player} from "./player.class";
+import {_Player} from "./player.class";
 import {PlayerDb, _playerDb} from "./player.db"
 import {getPlayerIdentifier} from "../utils";
 import Logger from '../logger'
@@ -6,19 +6,19 @@ import Logger from '../logger'
 const exp = global.exports
 
 export class _playerService {
-    private playersBySource: Map<number, Player>
+    private playersBySource: Map<number, _Player>
     private db: _playerDb
 
     constructor() {
-        this.playersBySource = new Map<number, Player>()
+        this.playersBySource = new Map<number, _Player>()
         this.db = PlayerDb
     }
 
-    addPlayer(source: number, player: Player): void {
+    addPlayer(source: number, player: _Player): void {
         this.playersBySource.set(source, player)
     }
 
-    getPlayer(source: number): Player | undefined {
+    getPlayer(source: number): _Player | undefined {
         return this.playersBySource.get(source)
     }
 
@@ -26,31 +26,31 @@ export class _playerService {
         this.playersBySource.delete(source)
     }
 
-    async updatePlayer(player: Player) {
+    async updatePlayer(player: _Player) {
         await this.db.update(player)
     }
 
-    async playerJoined(source: number): Promise<Player | undefined> {
+    async playerJoined(source: number): Promise<_Player | undefined> {
         const identifier = await getPlayerIdentifier(source, "fivem")
         if (!identifier) return;
 
-        let player: Player
+        let player: _Player
 
         const [exists, result] = await this.db.getPlayer(identifier)
         if (!exists) {
             const number = await exp.npwd.generatePhoneNumber()
-            player = new Player({
+            player = new _Player({
                 name: GetPlayerName(source.toString()),
                 source,
                 identifier,
                 phone_number: number,
                 position: {x: 0.0, y: 0.0, z: 0.0},
-                model: GetHashKey("a_m_y_hipster_02")
+                model: "a_m_y_hipster_02"
             })
             this.db.createPlayer(player)
         } else {
             const {name, phone_number, x, y, z, model} = result!
-            player = new Player({
+            player = new _Player({
                 name,
                 identifier,
                 source,
@@ -59,6 +59,18 @@ export class _playerService {
                 model
             })
         }
+
+        exp.npwd.newPlayer({
+            source: player.source,
+            identifier: player.identifier,
+            phoneNumber: player.phone_number,
+            firstname: player.name
+        })
+
+        const PlayerState = Player(source).state
+        PlayerState.set("firstSpawn", true, true)
+        PlayerState.set("spawnCoords", player.position, true)
+        PlayerState.set("playerModel", player.model, true)
 
         Logger.info(`Loaded new player ${player.source}:${player.name}`)
         Logger.debug(player)
@@ -79,7 +91,7 @@ export class _playerService {
         Logger.info(`Updated position for player [${source}] coords: [${x}, ${y}. ${z}]`)
     }
 
-    async updatePlayerModel(source: number, model: number) {
+    async updatePlayerModel(source: number, model: string) {
         const player = this.getPlayer(source)
         Logger.debug(player)
 

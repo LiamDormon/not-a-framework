@@ -17,7 +17,6 @@ const NearestHospital = () => {
   let ClosestDist = -1
   HOSPITAL_SPAWNS.forEach(location => {
     const dist = PlyPos.distance(location)
-    console.log(location, dist)
 
     if (ClosestDist === -1 || dist < ClosestDist) {
       ClosestDist = dist
@@ -33,15 +32,17 @@ exp["spawnmanager"].setAutoSpawnCallback(() => {
         const coords: Vec3 = LocalPlayer.state['spawnCoords'] ?? DEFAULT_SPAWN;
         exp['spawnmanager'].spawnPlayer({
             ...coords,
-            skipFade: false
+            skipFade: false,
+            model: LocalPlayer.state['playerModel']
         })
         LocalPlayer.state.set("firstSpawn", false, true)
     } else {
         const coords = NearestHospital();
+        console.log(LocalPlayer.state['playerModel'])
         exp['spawnmanager'].spawnPlayer({
             ...coords,
-            heading: 260.0,
-            skipFade: false
+            skipFade: false,
+            model: LocalPlayer.state['playerModel']
         })
     }
 })

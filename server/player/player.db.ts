@@ -1,10 +1,10 @@
-import {Player} from "./player.class"
+import {_Player} from "./player.class"
 import {PlayerDbResult} from "./player.interface";
 
 const exp = global.exports
 
 export class _playerDb {
-    createPlayer(player: Player) {
+    createPlayer(player: _Player) {
         exp.oxmysql.insert(
             "INSERT INTO users (identifier, name, phone_number, position) VALUES (?, ?, ?, ?)",
             [player.identifier, player.name, player.phone_number, JSON.stringify(player.position)]
@@ -25,7 +25,7 @@ export class _playerDb {
         }
     }
 
-    async update(player: Player) {
+    async update(player: _Player) {
         console.log(player)
         await exp.oxmysql.update_async(
             "UPDATE users SET x = :x, y = :y, z = :z, model = :model WHERE identifier = :iden ",

@@ -1,12 +1,12 @@
 import {PlayerProps} from "./player.interface";
 
-export class Player {
+export class _Player {
     name: string;
     source: number;
     identifier: string;
     phone_number: string;
     position: Vector;
-    model: number;
+    model: string;
 
     constructor({name, source, identifier, phone_number, position, model}: PlayerProps) {
         this.name = name;

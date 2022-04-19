@@ -6,20 +6,7 @@ const exp = global.exports
 
 onNet("playerJoining", async () => {
     const src = global.source
-    PlayerService.playerJoined(src).then(player => {
-      if (player) {
-          exp.npwd.newPlayer({
-              source: player.source,
-              identifier: player.identifier,
-              phoneNumber: player.phone_number,
-              firstname: player.name
-          })
-
-          const PlayerState = Player(src).state
-          PlayerState.set("firstSpawn", true, true)
-          PlayerState.set("spawnCoords", player.position, true)
-      }
-    })
+    await PlayerService.playerJoined(src)
 })
 
 on("onResourceStart", (name: string) => {
@@ -68,7 +55,7 @@ on("playerConnecting", (name: string, setKickReason: (msg: string) => void, defe
     }, 500)
 })
 
-AddStateBagChangeHandler("playerModel", "", async (bagName: string, key: string, value: number) => {
+AddStateBagChangeHandler("playerModel", "", async (bagName: string, key: string, value: string) => {
     const src = bagName.trim().replace("player:", "")
     await PlayerService.updatePlayerModel(Number(src), value)
 })

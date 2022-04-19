@@ -8,7 +8,7 @@ export default {
 
         SetPlayerModel(Game.Player.Handle, PedModel.Hash)
         PedModel.markAsNoLongerNeeded()
-        LocalPlayer.state.set("playerModel", PedModel.Hash, true)
+        LocalPlayer.state.set("playerModel", model, true)
     },
     name: "setmodel",
     description: "sets your player model",
