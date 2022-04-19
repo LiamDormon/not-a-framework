@@ -22,13 +22,17 @@ onNet("playerJoining", async () => {
     })
 })
 
-on("onResourceStart", () => {
+on("onResourceStart", (name: string) => {
+    if (name !== GetCurrentResourceName()) return
+
     getPlayers()?.forEach(async src => {
         await PlayerService.playerJoined(Number(src))
     })
 })
 
-on("onResourceStop", () => {
+on("onResourceStop", (name: string) => {
+    if (name !== GetCurrentResourceName()) return
+
     getPlayers()?.forEach(async src => {
         await PlayerService.updatePlayerPosition(Number(src))
     })
