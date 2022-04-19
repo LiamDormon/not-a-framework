@@ -6,6 +6,11 @@ import {Game} from "@nativewrappers/client";
 const exp = global.exports
 const DEFAULT_SPAWN = {x: 466.8401, y: 197.7201, z: 111.5291}
 
+on("onClientMapStart", () => {
+    exp['spawnmanager'].setAutoSpawn(true)
+    exp['spawnmanager'].forceRespawn()
+})
+
 const NearestHospital = () => {
   const PlyPos = Game.PlayerPed.Position
   let ClosestHospital: Vec3 = {x: 0.0, y: 0.0, z: 0.0}
