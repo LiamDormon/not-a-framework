@@ -30,6 +30,7 @@ const NearestHospital = () => {
 exp["spawnmanager"].setAutoSpawnCallback(() => {
     if (LocalPlayer.state['firstSpawn']) {
         const coords: Vec3 = LocalPlayer.state['spawnCoords'] ?? DEFAULT_SPAWN;
+
         exp['spawnmanager'].spawnPlayer({
             ...coords,
             skipFade: false,
@@ -38,7 +39,7 @@ exp["spawnmanager"].setAutoSpawnCallback(() => {
         LocalPlayer.state.set("firstSpawn", false, true)
     } else {
         const coords = NearestHospital();
-        console.log(LocalPlayer.state['playerModel'])
+
         exp['spawnmanager'].spawnPlayer({
             ...coords,
             skipFade: false,
