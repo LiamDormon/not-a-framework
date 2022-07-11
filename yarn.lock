@@ -32,6 +32,11 @@
   resolved "https://registry.yarnpkg.com/@nativewrappers/client/-/client-1.7.1.tgz#8625acf6a0cc22001eb47bd30290a55d83a86117"
   integrity sha512-4rEcuVOgd2SAvSHg3A/qRQvTr70IX2Do0R2ijpCXPiDPGlkRufDNRvVFHnrETyaKNtrWXSgxs9belD2dJq1zSQ==
 
+"@overextended/oxmysql@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@overextended/oxmysql/-/oxmysql-1.0.2.tgz#de91193aa8acf05bbdca08cb76b05415cdca7a69"
+  integrity sha512-VVnzXAa+JZPG2dTfccviaX/nd85h/s1ZIdx1mcXmLUW7I8Q3K60fpTjS6WZaa85xbKSg0TE5+gKCye4Qsc9bIw==
+
 "@types/node@^16.11.10":
   version "16.11.26"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-16.11.26.tgz#63d204d136c9916fb4dcd1b50f9740fe86884e47"

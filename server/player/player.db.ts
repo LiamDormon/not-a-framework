@@ -1,18 +1,17 @@
 import {_Player} from "./player.class"
 import {PlayerDbResult} from "./player.interface";
-
-const exp = global.exports
+import {oxmysql} from "@overextended/oxmysql";
 
 export class _playerDb {
     createPlayer(player: _Player) {
-        exp.oxmysql.insert(
+      oxmysql.insert(
             "INSERT INTO users (identifier, name, phone_number, position) VALUES (?, ?, ?, ?)",
             [player.identifier, player.name, player.phone_number, JSON.stringify(player.position)]
-        )
+      )
     }
 
     async getPlayer(identifier: string): Promise<[boolean, PlayerDbResult | undefined]> {
-        const results = await exp.oxmysql.query_async(
+        const results = await oxmysql.query(
             "SELECT * FROM users WHERE identifier = ?",
             [identifier]
         )
@@ -27,7 +26,7 @@ export class _playerDb {
 
     async update(player: _Player) {
         console.log(player)
-        await exp.oxmysql.update_async(
+        await oxmysql.update(
             "UPDATE users SET x = :x, y = :y, z = :z, model = :model WHERE identifier = :iden ",
             {
                 x: player.position.x,
