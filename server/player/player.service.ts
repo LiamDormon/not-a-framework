@@ -60,12 +60,16 @@ export class _playerService {
             })
         }
 
-        exp.npwd.newPlayer({
+        try {
+          exp.npwd.newPlayer({
             source: player.source,
             identifier: player.identifier,
             phoneNumber: player.phone_number,
             firstname: player.name
-        })
+          })
+        } catch (e) {
+          Logger.error("Missing newPlayer export in NPWD")
+        }
 
         const PlayerState = Player(source).state
         PlayerState.set("firstSpawn", true, true)
