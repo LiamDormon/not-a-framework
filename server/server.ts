@@ -15,3 +15,11 @@ on("onResourceStart", (name: string) => {
         }, 500)
     }
 })
+
+onNet("not-a-framework:setWeather", (weatherType: number) => {
+  GlobalState.Weather = weatherType
+})
+
+onNet("not-a-framework:setTime", (hh: number, mm: number) => {
+  GlobalState.Time = [hh, mm]
+})

@@ -1,7 +1,7 @@
 import './modules'
 import {Vec3} from "@nativewrappers/client/lib/utils/Vector3";
 import HOSPITAL_SPAWNS from './hospitals.json'
-import {Game} from "@nativewrappers/client";
+import {Game, Weather, World} from "@nativewrappers/client";
 
 const exp = global.exports
 const DEFAULT_SPAWN = {x: 466.8401, y: 197.7201, z: 111.5291}
@@ -46,4 +46,20 @@ exp["spawnmanager"].setAutoSpawnCallback(() => {
             model: LocalPlayer.state['playerModel']
         })
     }
+})
+
+AddStateBagChangeHandler('Time', '', (bagName: string, key: string, value: [string, string]) => {
+  const [hh, mm] = value
+  NetworkOverrideClockTime(Number(hh), Number(mm), 0)
+})
+
+AddStateBagChangeHandler('Weather', '', (bagName: string, key: string, value: Weather) => {
+  World.Weather = value
+  if (value === Weather.Christmas) {
+    SetForceVehicleTrails(true)
+    SetForcePedFootstepsTracks(true)
+  } else {
+    SetForceVehicleTrails(false)
+    SetForcePedFootstepsTracks(false)
+  }
 })

@@ -6,6 +6,8 @@ import FixVehicle from './fixvehicle'
 import './showcoords'
 import ShowCoords from './showcoords'
 import SetModel from './setmodel'
+import SetTime from './settime'
+import SetWeather from './setweather'
 
 interface CommandArgs {
     name: string;
@@ -48,3 +50,5 @@ CreateCommand(TeleportMarker)
 CreateCommand(FixVehicle)
 CreateCommand(ShowCoords)
 CreateCommand(SetModel)
+CreateCommand(SetTime)
+CreateCommand(SetWeather)
