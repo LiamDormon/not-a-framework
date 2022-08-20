@@ -5,8 +5,8 @@ import {oxmysql} from "@overextended/oxmysql";
 export class _playerDb {
     createPlayer(player: _Player) {
       oxmysql.insert(
-            "INSERT INTO users (identifier, name, phone_number, position) VALUES (?, ?, ?, ?)",
-            [player.identifier, player.name, player.phone_number, JSON.stringify(player.position)]
+            "INSERT INTO users (identifier, name, phone_number, position, x, y, z, model) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            [player.identifier, player.name, player.phone_number, player.position.x, player.position.y, player.position.z, player.model]
       )
     }
 
