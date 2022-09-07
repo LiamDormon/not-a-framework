@@ -25,6 +25,26 @@ on("onResourceStop", (name: string) => {
     })
 })
 
+on("onResourceStart", (name: string) => {
+  if (name !== "npwd") return;
+
+  getPlayers()?.forEach(async src => {
+    const player = PlayerService.getPlayer(parseInt(src))
+    if (!player) return;
+
+    try {
+      exp.npwd.newPlayer({
+        source: player.source,
+        identifier: player.identifier,
+        phoneNumber: player.phone_number,
+        firstname: player.name
+      })
+    } catch (e) {
+      Logger.error("Missing newPlayer export in NPWD")
+    }
+  })
+})
+
 on("playerDropped", async () => {
     const src = global.source
     await PlayerService.updatePlayerPosition(src)
