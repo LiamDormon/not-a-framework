@@ -8,6 +8,8 @@ import ShowCoords from './showcoords'
 import SetModel from './setmodel'
 import SetTime from './settime'
 import SetWeather from './setweather'
+import Upgrade from './upgrade'
+import Mods from './mods'
 
 interface CommandArgs {
     name: string;
@@ -52,3 +54,5 @@ CreateCommand(ShowCoords)
 CreateCommand(SetModel)
 CreateCommand(SetTime)
 CreateCommand(SetWeather)
+CreateCommand(Upgrade)
+CreateCommand(Mods)
