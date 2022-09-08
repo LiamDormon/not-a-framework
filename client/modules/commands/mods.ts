@@ -1,4 +1,4 @@
-import {Game, Menu, UIMenuItem, VehicleColor, VehicleModType} from '@nativewrappers/client'
+import {Game, Menu, Point, UIMenuItem, VehicleColor, VehicleModType, VehicleWindowTint} from '@nativewrappers/client'
 
 interface IModLabels {
   [key: number]: string
@@ -18,7 +18,7 @@ export default {
     if (veh) {
       veh.Mods.installModKit()
 
-      const mainMenu = new Menu('LS Customs', '')
+      const mainMenu = new Menu('', 'Upgrades people, upgrades', new Point(0, 0), 'shopui_title_carmod', 'shopui_title_carmod')
       const mods = Object.keys(VehicleModType).map((key) => {
         if (isNaN(Number(key)) ||  ["23", "11", "12", "13", "16", "18"].includes(key)) return
 
@@ -31,7 +31,7 @@ export default {
         if(!mod) return;
 
         const label = splitPascalCase(VehicleModType[mod.ModType])
-        const modMenu = new Menu(label, "Stock")
+        const modMenu = new Menu(label, "Stock", new Point(0, 0), 'commonmenu', 'gradient_bgd')
 
         for (let i = 0; i < mod.ModCount; i++) {
           const menuItem = new UIMenuItem(GetLabelText(GetModTextLabel(veh.Handle, mod.ModType, i)))
@@ -61,12 +61,12 @@ export default {
         return key
       })
 
-      const colourMenu = new Menu('Colours', '')
-      const primary = new Menu('Primary', '')
-      const secondary = new Menu('Secondary', '')
-      const pearlescent = new Menu('Pearlescent', '')
-      const dash = new Menu('Dashboard', '')
-      const trim = new Menu('Trim', '')
+      const colourMenu = new Menu('Colours', '', new Point(0, 0), 'commonmenu', 'gradient_bgd')
+      const primary = new Menu('Primary', '', new Point(0, 0), 'commonmenu', 'gradient_bgd')
+      const secondary = new Menu('Secondary', '', new Point(0, 0), 'commonmenu', 'gradient_bgd')
+      const pearlescent = new Menu('Pearlescent', '', new Point(0, 0), 'commonmenu', 'gradient_bgd')
+      const dash = new Menu('Dashboard', '', new Point(0, 0), 'commonmenu', 'gradient_bgd')
+      const trim = new Menu('Trim', '', new Point(0, 0), 'commonmenu', 'gradient_bgd')
 
       colours.forEach((colour, index) => {
         if(!colour) return
@@ -104,7 +104,34 @@ export default {
       colourMenu.addSubMenu(pearlescent, 'Pearlescent')
       colourMenu.addSubMenu(dash, 'Dashboard')
       colourMenu.addSubMenu(trim, 'Trim')
+
+      const tints = Object.keys(VehicleWindowTint).map((key) => {
+        if (!isNaN(Number(key)) || key == "Stock") return
+        return key
+      })
+
+      const tintMenu = new Menu('Tints', '', new Point(0, 0), 'commonmenu', 'gradient_bgd')
+
+      tints?.forEach((tint) =>{
+        if(!tint) return;
+        tintMenu.addItem(new UIMenuItem(splitPascalCase(tint)))
+      })
+
+      tintMenu.itemSelect.on((menu, tint) => {
+        veh.Mods.WindowTint = tint as number
+      })
+
       mainMenu.addSubMenu(colourMenu, 'Colour')
+      mainMenu.addSubMenu(tintMenu, 'Window Tints')
+
+      const upgradeBtn = new UIMenuItem('Upgrade')
+      upgradeBtn.activated.on(() => ExecuteCommand("upgrade"))
+
+      const repairBtn = new UIMenuItem('Repair & Clean')
+      repairBtn.activated.on(() => ExecuteCommand("fix"))
+
+      mainMenu.addItem(upgradeBtn)
+      mainMenu.addItem(repairBtn)
 
       mainMenu.open()
     }
