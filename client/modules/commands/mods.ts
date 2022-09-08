@@ -1,19 +1,12 @@
 import {Game, Menu, Point, UIMenuItem, VehicleColor, VehicleModType, VehicleWindowTint} from '@nativewrappers/client'
 
-interface IModLabels {
-  [key: number]: string
-}
-
-const wordSplitRegex = new RegExp(/($[a-z])|[A-Z][^A-Z]+/g)
-
 function splitPascalCase(word: string) {
-  return word.match(wordSplitRegex)?.join(" ") || word
+  return word.match(/($[a-z])|[A-Z][^A-Z]+/g)?.join(" ") || word
 }
 
 export default {
   handler: async () => {
-    const ply = Game.PlayerPed
-    const veh = ply.CurrentVehicle
+    const veh = Game.PlayerPed.CurrentVehicle
 
     if (veh) {
       veh.Mods.installModKit()
