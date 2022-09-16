@@ -1,4 +1,13 @@
-import {Game, Menu, Point, UIMenuItem, VehicleColor, VehicleModType, VehicleWindowTint} from '@nativewrappers/client'
+import {
+  BadgeStyle,
+  Game,
+  Menu,
+  Point,
+  UIMenuItem,
+  VehicleColor,
+  VehicleModType,
+  VehicleWindowTint
+} from '@nativewrappers/client'
 
 function splitPascalCase(word: string) {
   return word.match(/($[a-z])|[A-Z][^A-Z]+/g)?.join(" ") || word
@@ -12,38 +21,60 @@ export default {
       veh.Mods.installModKit()
 
       const mainMenu = new Menu('', 'Upgrades people, upgrades', new Point(0, 0), 'shopui_title_carmod', 'shopui_title_carmod')
-      const mods = Object.keys(VehicleModType).map((key) => {
-        if (isNaN(Number(key)) ||  ["23", "11", "12", "13", "16", "18"].includes(key)) return
-
-        if (GetNumVehicleMods(veh.Handle, Number(key)) > 0) {
-          return veh.Mods.getMod(Number(key))
-        }
-      })
+      const mods = veh.Mods.getAllMods().filter(mod => !["23", "11", "12", "13", "16", "18"].includes(mod!.ModType.toString())) // Remove performance upgrades
 
       mods?.forEach(mod => {
         if(!mod) return;
 
         const label = splitPascalCase(VehicleModType[mod.ModType])
-        const modMenu = new Menu(label, "Stock", new Point(0, 0), 'commonmenu', 'gradient_bgd')
+        const modMenu = new Menu("", label, new Point(0, 0), 'shopui_title_carmod', 'shopui_title_carmod')
+        const equippedMod = veh.Mods.getMod(mod.ModType)!.Index
 
         for (let i = 0; i < mod.ModCount; i++) {
           const menuItem = new UIMenuItem(GetLabelText(GetModTextLabel(veh.Handle, mod.ModType, i)))
+          if (mod.ModType === VehicleModType.Suspension) {
+            menuItem.Text = `Stage ${i + 1}`
+          }
+
+          if(i === equippedMod) {
+            menuItem.RightBadge = BadgeStyle.Car
+          }
           modMenu.addItem(menuItem)
         }
 
         const stock = new UIMenuItem("Stock")
 
+        if (equippedMod === -1) {
+          stock.RightBadge = BadgeStyle.Car
+        }
+
         stock.activated.on(() => {
           veh.Mods.getMod(mod.ModType)!.Index = -1
-          modMenu.Subtitle = "Stock"
+          modMenu.items.forEach((menuitem) => {
+            if (menuitem.Text === "Stock") {
+              menuitem.RightBadge = BadgeStyle.Car
+            } else {
+              menuitem.RightBadge = BadgeStyle.None
+            }
+          })
         })
 
         modMenu.addItem(stock)
 
         modMenu.itemSelect.on((menu, item) => {
           const modIndex = item as number
+          let modLabel = GetLabelText(GetModTextLabel(veh.Handle, mod.ModType, modIndex))
+          if (mod.ModType === VehicleModType.Suspension) {
+            modLabel = `Stage ${modIndex + 1}`
+          }
           veh.Mods.getMod(mod.ModType)!.Index = modIndex
-          modMenu.Subtitle = GetLabelText(GetModTextLabel(veh.Handle, mod.ModType, modIndex))
+          modMenu.items.forEach((menuitem) => {
+            if (menuitem.Text === modLabel && modLabel !== "NULL") {
+              menuitem.RightBadge = BadgeStyle.Car
+            } else {
+              menuitem.RightBadge = BadgeStyle.None
+            }
+          })
         })
 
         mainMenu.addSubMenu(modMenu, label)
@@ -54,12 +85,12 @@ export default {
         return key
       })
 
-      const colourMenu = new Menu('Colours', '', new Point(0, 0), 'commonmenu', 'gradient_bgd')
-      const primary = new Menu('Primary', '', new Point(0, 0), 'commonmenu', 'gradient_bgd')
-      const secondary = new Menu('Secondary', '', new Point(0, 0), 'commonmenu', 'gradient_bgd')
-      const pearlescent = new Menu('Pearlescent', '', new Point(0, 0), 'commonmenu', 'gradient_bgd')
-      const dash = new Menu('Dashboard', '', new Point(0, 0), 'commonmenu', 'gradient_bgd')
-      const trim = new Menu('Trim', '', new Point(0, 0), 'commonmenu', 'gradient_bgd')
+      const colourMenu = new Menu('', 'Colours', new Point(0, 0), 'shopui_title_carmod', 'shopui_title_carmod')
+      const primary = new Menu('', 'Primary', new Point(0, 0), 'shopui_title_carmod', 'shopui_title_carmod')
+      const secondary = new Menu('', 'Secondary', new Point(0, 0), 'shopui_title_carmod', 'shopui_title_carmod')
+      const pearlescent = new Menu('', 'Pearlescent', new Point(0, 0), 'shopui_title_carmod', 'shopui_title_carmod')
+      const dash = new Menu('', 'Dashboard', new Point(0, 0), 'shopui_title_carmod', 'shopui_title_carmod')
+      const trim = new Menu('', 'Trim', new Point(0, 0), 'shopui_title_carmod', 'shopui_title_carmod')
 
       colours.forEach((colour, index) => {
         if(!colour) return
@@ -103,7 +134,7 @@ export default {
         return key
       })
 
-      const tintMenu = new Menu('Tints', '', new Point(0, 0), 'commonmenu', 'gradient_bgd')
+      const tintMenu = new Menu('', 'Window Tints', new Point(0, 0), 'shopui_title_carmod', 'shopui_title_carmod')
 
       tints?.forEach((tint) =>{
         if(!tint) return;
