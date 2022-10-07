@@ -2,6 +2,7 @@ import VehicleCommand from './createvehicle'
 import WeaponCommand from './giveweapon'
 import DeleteVehicle from './deletevehicle'
 import TeleportMarker from './teleportmarket'
+import TeleportCoords from './teleportcoord'
 import FixVehicle from './fixvehicle'
 import './showcoords'
 import ShowCoords from './showcoords'
@@ -56,3 +57,4 @@ CreateCommand(SetTime)
 CreateCommand(SetWeather)
 CreateCommand(Upgrade)
 CreateCommand(Mods)
+CreateCommand(TeleportCoords)
