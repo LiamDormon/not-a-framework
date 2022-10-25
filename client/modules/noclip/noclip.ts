@@ -1,8 +1,9 @@
-import {InstructionalButtons, Control, Game, Vector3} from "@nativewrappers/client";
+import {InstructionalButtons, Control, Game, Vector3, Entity} from "@nativewrappers/client";
 
 class _noclip {
     private enabled = false
     private tick = 0
+    private entity: Entity | undefined;
 
     toggle() {
         if (!this.enabled) {
@@ -15,17 +16,22 @@ class _noclip {
     disable() {
         this.enabled = false
         clearTick(this.tick)
-        const ply = Game.PlayerPed
-        ply.Opacity = 255
-        SetEntityCollision(ply.Handle, true, true)
+        if(this.entity) {
+          this.entity.Opacity = 255
+          this.entity.IsCollisionEnabled = true
+        }
     }
 
     enable() {
         this.enabled = true
-        const ply = Game.PlayerPed
+        if (Game.PlayerPed.CurrentVehicle) {
+          this.entity = Game.PlayerPed.CurrentVehicle
+        } else {
+          this.entity = Game.PlayerPed
+        }
 
-        ply.Opacity = 150
-        SetEntityCollision(ply.Handle, false, false)
+        this.entity.Opacity = 150
+        this.entity.IsCollisionEnabled = false
 
         const emptyVec = new Vector3(0.0, 0.0, 0.0)
         const buttons = new InstructionalButtons([
@@ -35,12 +41,12 @@ class _noclip {
         ])
 
         this.tick = setTick(async () => {
-            buttons.draw()
+            await buttons.draw()
 
-            ply.Velocity = emptyVec
-            ply.Rotation = emptyVec
+            this.entity!.Velocity = emptyVec
+            this.entity!.Rotation = emptyVec
 
-            SetEntityHeading(ply.Handle, GetGameplayCamRelativeHeading());
+            SetEntityHeading(this.entity!.Handle, GetGameplayCamRelativeHeading());
 
             const speed = IsControlPressed(0, Control.Sprint) ? 5.0 : 1.0
 
@@ -61,7 +67,7 @@ class _noclip {
                 z = -0.5
             }
 
-            ply.PositionNoOffset = ply.getOffsetPosition(new Vector3(0.0, y * speed, z * speed))
+            this.entity!.PositionNoOffset = this.entity!.getOffsetPosition(new Vector3(0.0, y * speed, z * speed))
         })
     }
 }
