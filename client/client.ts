@@ -37,6 +37,11 @@ exp["spawnmanager"].setAutoSpawnCallback(() => {
             model: LocalPlayer.state['playerModel']
         })
         LocalPlayer.state.set("firstSpawn", false, true)
+
+        // override player HP on spawn
+        const ply = PlayerPedId()
+        SetEntityMaxHealth(ply, 200)
+        SetEntityHealth(GetPedMaxHealth(ply), 200)
     } else {
         const coords = NearestHospital();
 
@@ -45,6 +50,11 @@ exp["spawnmanager"].setAutoSpawnCallback(() => {
             skipFade: false,
             model: LocalPlayer.state['playerModel']
         })
+
+        // override player HP on spawn
+        const ply = PlayerPedId()
+        SetEntityMaxHealth(ply, 200)
+        SetEntityHealth(GetPedMaxHealth(ply), 200)
     }
 })
 
